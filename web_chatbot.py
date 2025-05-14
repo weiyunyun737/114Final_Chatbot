@@ -3,7 +3,7 @@ import streamlit as st
 import requests
 import json
 
-# ✅ 頁面設定放最前
+# ✅ UI設定
 st.set_page_config(page_title="客服小幫手", page_icon="💬")
 
 st.markdown(
