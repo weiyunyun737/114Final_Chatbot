@@ -1,8 +1,9 @@
 import os
 import streamlit as st
 import requests
-from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceEmbeddings
+
 
 # ✅ Streamlit 頁面設定
 st.set_page_config(page_title="客服小幫手", page_icon="💬")
