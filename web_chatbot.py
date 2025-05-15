@@ -1,9 +1,10 @@
 import os
+os.environ["STREAMLIT_WATCHER_TYPE"] = "none"  # 避免 torch 熱重載崩潰
+
 import streamlit as st
 import requests
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
-
 
 # ✅ Streamlit 頁面設定
 st.set_page_config(page_title="客服小幫手", page_icon="💬")
@@ -23,7 +24,7 @@ faq_responses = {
     "你是誰": "我是 OpenRouter 聊天客服機器人，隨時為您服務。",
 }
 
-# ✅ 初始化嵌入模型與向量資料庫（模型下載到local）
+# ✅ 初始化嵌入模型與向量資料庫
 embedding = HuggingFaceEmbeddings(
     model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 )
@@ -42,7 +43,7 @@ if len(vectordb.get()['documents']) == 0:
     metadatas = [{"source": "活動1"}, {"source": "活動2"}, {"source": "活動3"}]
     vectordb.add_texts(texts, metadatas=metadatas)
 
-# ✅ 定義語意查詢 + Claude 回覆的函式
+# ✅ Claude 回覆函式
 def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-haiku") -> str:
     docs = vectordb.similarity_search(query, k=3)
     context = "\n".join([doc.page_content for doc in docs])
@@ -72,13 +73,12 @@ def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-ha
     if res.status_code == 200:
         return res.json()["choices"][0]["message"]["content"]
     else:
-        return "❌ 錯誤：" + res.text
+        return "❌ 回覆錯誤：" + res.text
 
 # ✅ 使用者輸入區
 user_input = st.text_input("請輸入您的問題：", key="user_input")
 
 if user_input:
-    # 先查 FAQ 快取
     if user_input in faq_responses:
         st.success(f"🤖：{faq_responses[user_input]}")
     else:
