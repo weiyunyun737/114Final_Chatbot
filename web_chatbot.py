@@ -1,8 +1,8 @@
 import os
 import streamlit as st
 import requests
-from langchain.vectorstores import Chroma
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 
 # ✅ Streamlit 頁面設定
