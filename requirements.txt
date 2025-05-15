@@ -1,6 +1,7 @@
 streamlit
 langchain
 langchain-community
-chromadb
+chromadb==0.4.14
+protobuf<4.0
 sentence-transformers
 requests
