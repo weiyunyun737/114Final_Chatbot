@@ -4,7 +4,7 @@ os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
 import streamlit as st
 import requests
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 st.set_page_config(page_title="客服test", page_icon="💬")
 st.markdown("<h1 style='font-size:30px; color:#F63366;'>客服test 💬</h1>", unsafe_allow_html=True)

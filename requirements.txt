@@ -3,6 +3,7 @@ langchain==0.2.1
 langchain-community
 langchain-chroma
 langchain-huggingface
+huggingface_hub[hf_xet]
 faiss-cpu
 sentence-transformers
 requests
