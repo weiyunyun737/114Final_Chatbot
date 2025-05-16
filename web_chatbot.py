@@ -28,7 +28,7 @@ embedding = HuggingFaceEmbeddings(
 # ✅ FAISS 替代 Chroma
 persist_path = "faiss_index"
 if os.path.exists(persist_path):
-    vectordb = FAISS.load_local(persist_path, embedding)
+    vectordb = FAISS.load_local(persist_path, embedding, allow_dangerous_deserialization=True)
 else:
     texts = [
         "全聯每週三會員日有指定商品折扣。",
