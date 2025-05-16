@@ -7,7 +7,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
 st.set_page_config(page_title="客服test", page_icon="💬")
-st.markdown("<h1 style='font-size:30px; color:#F63366;'>客服機器人小幫手 💬</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size:30px; color:#F63366;'>客服test 💬</h1>", unsafe_allow_html=True)
 st.markdown("您好，有任何問題都可以問我喔！")
 
 OPENROUTER_API_KEY = st.secrets.get("OPENROUTER_API_KEY") or os.getenv("OPENROUTER_API_KEY")
