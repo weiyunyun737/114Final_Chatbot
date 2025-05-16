@@ -1,11 +1,10 @@
 streamlit
 langchain==0.2.1
 langchain-community
-langchain-chroma
 langchain-huggingface
 huggingface_hub[hf_xet]
 faiss-cpu
-sentence-transformers
+sentence-transformers==2.2.2
 requests
 protobuf<4.0
 
