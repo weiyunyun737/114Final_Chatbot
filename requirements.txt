@@ -1,7 +1,7 @@
 streamlit
 langchain==0.2.1
-langchain-community
-langchain-huggingface
+langchain-community==0.3.24
+langchain-huggingface==0.2.0
 huggingface_hub[hf_xet]
 faiss-cpu
 sentence-transformers==2.2.2
