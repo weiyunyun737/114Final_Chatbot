@@ -8,3 +8,4 @@ sentence-transformers
 requests
 protobuf<4.0
 torch==2.1.0
+pysqlite3-binary

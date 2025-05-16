@@ -1,3 +1,8 @@
+# 解決 SQLite 版本錯誤（使用 pysqlite3）
+import pysqlite3
+import sys
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+
 import os
 os.environ["STREAMLIT_WATCHER_TYPE"] = "none"  # 避免 torch 熱重載崩潰
 
