@@ -62,7 +62,7 @@ def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-ha
     st.write("🔍 系統查得相近資料：")
     for doc in docs:
     	st.markdown(f"- `{doc.page_content}`")
-context = "\n".join([doc.page_content for doc in docs])
+    context = "\n".join([doc.page_content for doc in docs])
 
     prompt = f"""你是一位全聯的客服人員。請根據以下資料回答顧客的問題：
 
