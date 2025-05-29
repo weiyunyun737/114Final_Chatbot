@@ -56,8 +56,13 @@ else:
 
 # ✅ Claude 回答函式（RAG）
 def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-haiku") -> str:
-    docs = vectordb.similarity_search(query, k=3)
-    context = "\n".join([doc.page_content for doc in docs])
+    #docs = vectordb.similarity_search(query, k=5)
+    #context = "\n".join([doc.page_content for doc in docs])
+    docs = vectordb.similarity_search(query, k=5)
+    st.write("🔍 系統查得相近資料：")
+    for doc in docs:
+    	st.markdown(f"- `{doc.page_content}`")
+context = "\n".join([doc.page_content for doc in docs])
 
     prompt = f"""你是一位全聯的客服人員。請根據以下資料回答顧客的問題：
 
@@ -67,7 +72,7 @@ def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-ha
 【顧客問題】
 {query}
 
-請用親切、簡潔的方式回答。
+請用親切的方式回答。
 """
 
     headers = {
