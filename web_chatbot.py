@@ -8,7 +8,7 @@ os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
 
 # ✅ 頁面設定
 st.set_page_config(page_title="客服test", page_icon="💬")
-st.markdown("<h1 style='font-size:30px; color:#F63366;'>客服機器人小幫手 💬</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size:30px; color:#F63366;'>客服test 💬</h1>", unsafe_allow_html=True)
 st.markdown("您好，有任何問題都可以問我喔！")
 
 # ✅ API Key 設定
@@ -21,7 +21,7 @@ if not OPENROUTER_API_KEY:
 faq_responses = {
     "如何聯絡客服": "您可以透過 support@example.com 聯絡我們的客服團隊。",
     "營業時間": "我們的客服營業時間為週一至週五 09:00 至 18:00。",
-    "你是誰": "我是 OpenRouter 聊天客服機器人，隨時為您服務。",
+    "你是誰": "我是全聯線上文字客服，隨時為您服務。",
 }
 
 # ✅ 載入 FAISS 與 Embedding 模型
@@ -41,23 +41,18 @@ except Exception as e:
     st.error(f"❌ 模型載入失敗：{e}")
     st.stop()
 
-# ✅ 向量資料庫初始化（第一次會建立、之後可讀取）
+# 向量資料庫初始化（僅讀取既有的 faiss_index）
 persist_path = "faiss_index"
 if os.path.exists(persist_path):
     try:
         vectordb = FAISS.load_local(persist_path, embedding, allow_dangerous_deserialization=True)
+        print("✅ 向量庫載入成功，資料筆數：", vectordb.index.ntotal)
     except Exception as e:
         st.error(f"❌ 載入向量庫失敗：{e}")
         st.stop()
 else:
-    texts = [
-        "全聯每週三會員日有指定商品折扣。",
-        "加入 PX Pay 可享更多全聯點數回饋。",
-        "中元節有生鮮特賣活動，請關注官方公告。",
-    ]
-    metadatas = [{"source": "活動1"}, {"source": "活動2"}, {"source": "活動3"}]
-    vectordb = FAISS.from_texts(texts, embedding=embedding, metadatas=metadatas)
-    vectordb.save_local(persist_path)
+    st.error("❌ 未找到向量資料庫，請先執行爬蟲並建立 faiss_index/")
+    st.stop()
 
 # ✅ Claude 回答函式（RAG）
 def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-haiku") -> str:
