@@ -66,7 +66,7 @@ try:
         for i in range(min(len(titles), len(prices))):
             name = titles[i].text.strip()
             price = prices[i].text.strip()
-            #print(f"  {i+1}. 📦 {name} - 💰 {price}")
+            print(f"  {i+1}. 📦 {name} - 💰 {price}")
 
             # 加入向量資料
             combined_text = f"分類：{category_name}\n商品：{name}\n價格：{price}"
