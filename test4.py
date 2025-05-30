@@ -8,6 +8,7 @@ import time
 import tempfile
 import shutil
 import os
+
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -19,7 +20,7 @@ GECKO_PATH = "/home/vivian/bin/geckodriver"
 profile_path = tempfile.mkdtemp()
 options = Options()
 options.binary_location = FIREFOX_PATH
-options.add_argument("--headless")  # ✅ 啟用 headless 模式
+options.add_argument("--headless")
 
 service = Service(executable_path=GECKO_PATH)
 driver = webdriver.Firefox(service=service, options=options)
@@ -30,12 +31,11 @@ metadatas = []
 try:
     driver.get("https://www.pxmart.com.tw/campaign/life-will")
 
-    # ✅ 等待分類按鈕出現
+    # 等待分類按鈕出現
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, "//a[contains(@class, 'Button_button')]"))
     )
 
-    # ✅ 抓出所有分類連結
     category_links = driver.find_elements(By.XPATH, "//a[contains(@class, 'Button_button')]")
     category_map = {}
     for link in category_links:
@@ -44,11 +44,10 @@ try:
         if name and href:
             category_map[name] = href
 
-    print(f"✅ 找到 {len(category_map)} 個分類：\n", list(category_map.keys()))
+    print(f"✅ 找到 {len(category_map)} 個分類：", list(category_map.keys()))
 
-    # ✅ 依序造訪每個分類連結
     for category_name, category_url in category_map.items():
-        print(f"\n📂 分類：{category_name}")
+        print(f"\n🔎 分類：{category_name}")
         driver.get(category_url)
 
         try:
@@ -59,19 +58,18 @@ try:
             print("⚠️ 無商品資料")
             continue
 
-        # ✅ 擷取商品資訊
         titles = driver.find_elements(By.XPATH, "//h5[contains(@class, 'Card_card-title')]")
         prices = driver.find_elements(By.XPATH, "//p[contains(@class, 'Card_card-productPrice')]")
 
         for i in range(min(len(titles), len(prices))):
             name = titles[i].text.strip()
             price = prices[i].text.strip()
-            print(f"  {i+1}. 📦 {name} - 💰 {price}")
-
-            # 加入向量資料
-            combined_text = f"分類：{category_name}\n商品：{name}\n價格：{price}"
-            texts.append(combined_text)
+            full_text = f"商品名稱：{name}，價格：{price}，分類：{category_name}"
+            texts.append(full_text)
             metadatas.append({"category": category_name})
+
+            if "洗髮" in name:
+                print(f"✅ 找到洗髮相關商品：{full_text}")
 
 except Exception as e:
     print("❌ 發生錯誤：", e)
@@ -81,12 +79,10 @@ finally:
     shutil.rmtree(profile_path)
 
 # === 向量建立 ===
-print("\n🔄 建立向量庫中...")
+print("\n🧠 建立向量庫中...")
 embedding = HuggingFaceEmbeddings(
-    #model_name="sentence-transformers/all-MiniLM-L6-v2",
     model_name="sentence-transformers/all-mpnet-base-v2",
-    # model_kwargs={"device": "cpu"}  用CPU
-    model_kwargs={"device":"cuda"}
+    model_kwargs={"device": "cpu"}  # 可改為 "cuda" 如使用 GPU
 )
 
 db = FAISS.from_texts(texts=texts, embedding=embedding, metadatas=metadatas)
