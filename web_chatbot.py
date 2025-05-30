@@ -35,7 +35,7 @@ except ImportError as e:
 try:
     embedding = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2",
-        model_kwargs={"device": "cuda"}
+        model_kwargs={"device": "cpu"}
     )
 except Exception as e:
     st.error(f"❌ 模型載入失敗：{e}")
@@ -46,7 +46,7 @@ persist_path = "faiss_index"
 if os.path.exists(persist_path):
     try:
         vectordb = FAISS.load_local(persist_path, embedding, allow_dangerous_deserialization=True)
-        print("✅ 向量庫載入成功，資料筆數：", vectordb.index.ntotal)
+        st.success(f"✅ 向量庫載入成功，資料筆數：{vectordb.index.ntotal}")
     except Exception as e:
         st.error(f"❌ 載入向量庫失敗：{e}")
         st.stop()
@@ -58,7 +58,7 @@ else:
 def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-haiku") -> str:
     #docs = vectordb.similarity_search(query, k=5)
     #context = "\n".join([doc.page_content for doc in docs])
-    docs = vectordb.similarity_search(query, k=5)
+    docs = vectordb.similarity_search(query, k=10)
     st.write("🔍 系統查得相近資料：")
     for doc in docs:
     	st.markdown(f"- `{doc.page_content}`")
