@@ -35,7 +35,7 @@ except ImportError as e:
 try:
     embedding = HuggingFaceEmbeddings(
         #model_name="sentence-transformers/all-MiniLM-L6-v2",
-        model_name="sentence-transformers/all-mpnet-base-v2",
+        model_name="shibing624/text2vec-base-chinese",
         model_kwargs={"device": "cpu"}
     )
 except Exception as e:
@@ -57,9 +57,8 @@ else:
 
 # ✅ Claude 回答函式（RAG）
 def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-haiku") -> str:
-    #docs = vectordb.similarity_search(query, k=5)
     #context = "\n".join([doc.page_content for doc in docs])
-    docs = vectordb.similarity_search(query, k=10)
+    docs = vectordb.similarity_search(query, k=20)
     st.write("🔍 系統查得相近資料：")
     for doc in docs:
     	st.markdown(f"- `{doc.page_content}`")

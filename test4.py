@@ -81,10 +81,15 @@ finally:
 # === 向量建立 ===
 print("\n🧠 建立向量庫中...")
 embedding = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-mpnet-base-v2",
+    #model_name="sentence-transformers/all-mpnet-base-v2",
+    model_name="shibing624/text2vec-base-chinese",
     model_kwargs={"device": "cpu"}  # 可改為 "cuda" 如使用 GPU
 )
 
 db = FAISS.from_texts(texts=texts, embedding=embedding, metadatas=metadatas)
 db.save_local("faiss_index")
 print("✅ 向量庫已儲存至 faiss_index/")
+print("✅ 向量庫筆數：", db.index.ntotal)
+docs = db.similarity_search("洗髮", k=20)
+for i, doc in enumerate(docs):
+    print(f"{i+1}.", doc.page_content)
