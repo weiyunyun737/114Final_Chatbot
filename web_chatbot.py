@@ -35,7 +35,7 @@ except ImportError as e:
 try:
     embedding = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2",
-        model_kwargs={"device": "cpu"}
+        model_kwargs={"device": "cuda"}
     )
 except Exception as e:
     st.error(f"❌ 模型載入失敗：{e}")
@@ -72,7 +72,7 @@ def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-ha
 【顧客問題】
 {query}
 
-請用親切的方式回答。
+請用親切、簡潔的方式回答。
 """
 
     headers = {
