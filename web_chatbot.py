@@ -65,7 +65,7 @@ def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-ha
     	st.markdown(f"- `{doc.page_content}`")
     context = "\n".join([doc.page_content for doc in docs])
 
-    prompt = f"""你是一位全聯的客服人員。請根據以下資料回答顧客的問題：
+    prompt = f"""你是一位全聯客服人員。請只根據下列內部資料回答問題，並清楚列出找到的商品。若資料中沒有，請說明無法查得，但不要假設。
 
 【內部資料】
 {context}
