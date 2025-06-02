@@ -8,8 +8,8 @@ from langchain_huggingface import HuggingFaceEmbeddings
 os.environ["STREAMLIT_WATCHER_TYPE"] = "none"
 
 # ✅ 頁面設定
-st.set_page_config(page_title="全聯客服", page_icon="")
-st.markdown("<h1 style='font-size:30px; color:#F63366;'>全聯客服 </h1>", unsafe_allow_html=True)
+st.set_page_config(page_title="全聯客服", page_icon=":)")
+st.markdown("<h1 style='font-size:30px; color:#F63366;'>全聯客服 </h1>", unsafe_allow_html=True)
 st.markdown("您好，有任何問題都可以問我喔！")
 
 # ✅ API Key 設定
@@ -75,10 +75,10 @@ def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-ha
         docs_product = vectordb_product.similarity_search(query, k=k)
         combined_docs.extend(docs_product)
 
-    st.write(" 系統查得相近資料：")
-    for doc in combined_docs:
-        source_type = doc.metadata.get('type', 'unknown')
-        st.markdown(f"- `{doc.page_content}` (來源: `{source_type}`) ")
+    with st.expander("系統查得相近資料：")
+    	for doc in combined_docs:
+            source_type = doc.metadata.get('type', 'unknown')
+            st.markdown(f"- `{doc.page_content}` (來源: `{source_type}`) ")
 
     context = "\n".join([doc.page_content for doc in combined_docs])
 
