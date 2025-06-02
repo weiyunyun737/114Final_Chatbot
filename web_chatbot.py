@@ -75,7 +75,7 @@ def query_with_rag_claude(query: str, api_key: str, model="anthropic/claude-3-ha
         docs_product = vectordb_product.similarity_search(query, k=k)
         combined_docs.extend(docs_product)
 
-    with st.expander("系統查得相近資料：")
+    with st.expander("系統查得相近資料："):
     	for doc in combined_docs:
             source_type = doc.metadata.get('type', 'unknown')
             st.markdown(f"- `{doc.page_content}` (來源: `{source_type}`) ")
