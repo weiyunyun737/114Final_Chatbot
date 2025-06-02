@@ -87,8 +87,8 @@ embedding = HuggingFaceEmbeddings(
 )
 
 db = FAISS.from_texts(texts=texts, embedding=embedding, metadatas=metadatas)
-db.save_local("faiss_index")
-print("✅ 向量庫已儲存至 faiss_index/")
+db.save_local("faiss_index_product")
+print("✅ 向量庫已儲存至 faiss_index_product/")
 print("✅ 向量庫筆數：", db.index.ntotal)
 '''
 docs = db.similarity_search("洗髮", k=20)

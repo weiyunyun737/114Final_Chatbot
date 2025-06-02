@@ -99,7 +99,7 @@ if texts:
         model_kwargs={"device": "cpu"}
     )
     db = FAISS.from_texts(texts=texts, embedding=embedding, metadatas=metadatas)
-    db.save_local("faiss_index")
-    print(f"✅ 已建立 {len(texts)} 筆 FAQ 向量資料並儲存至 faiss_index/")
+    db.save_local("faiss_index_faq")
+    print(f"✅ 已建立 {len(texts)} 筆 FAQ 向量資料並儲存至 faiss_index_faq/")
 else:
     print("⚠️ 無 FAQ 資料，向量庫未建立")
