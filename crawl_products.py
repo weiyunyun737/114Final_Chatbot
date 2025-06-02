@@ -66,11 +66,11 @@ try:
             price = prices[i].text.strip()
             full_text = f"商品名稱：{name}，價格：{price}，分類：{category_name}"
             texts.append(full_text)
-            metadatas.append({"category": category_name})
-
-            if "洗髮" in name:
-                print(f"✅ 找到洗髮相關商品：{full_text}")
-
+            metadatas.append({
+            	"type": "product",
+            	"category": category_name
+            })
+            
 except Exception as e:
     print("❌ 發生錯誤：", e)
 
@@ -90,6 +90,8 @@ db = FAISS.from_texts(texts=texts, embedding=embedding, metadatas=metadatas)
 db.save_local("faiss_index")
 print("✅ 向量庫已儲存至 faiss_index/")
 print("✅ 向量庫筆數：", db.index.ntotal)
+'''
 docs = db.similarity_search("洗髮", k=20)
 for i, doc in enumerate(docs):
     print(f"{i+1}.", doc.page_content)
+'''
